@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Town Jumma Masjid Nawalapitiya - Ithikaf Registration</title>
+    <style>
+        :root {
+            --primary: #1e5631;
+            --secondary: #d4af37;
+            --accent: #f5f5dc;
+            --text: #2c3e50;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --info: #3498db;
+            --bg-color: #f0f4f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-color) 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px;
+            width: 100%;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d7a46 100%);
+            color: var(--white);
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 0 0 25px 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(212, 175, 55, 0.08) 10px,
+                    rgba(212, 175, 55, 0.08) 20px);
+            animation: shine 25s linear infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .mosque-name {
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .title {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            color: var(--secondary);
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Language Switcher */
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            padding: 0 10px;
+        }
+
+        .lang-btn {
+            padding: 10px 18px;
+            border: 2px solid var(--primary);
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            flex: 1;
+            max-width: 120px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 10px rgba(30, 86, 49, 0.3);
+        }
+
+        .lang-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+            display: none;
+            width: 100%;
+        }
+
+        .card.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: clamp(0.9rem, 2.8vw, 0.95rem);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            min-height: 48px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(30, 86, 49, 0.1);
+        }
+
+        input.error {
+            border-color: var(--danger);
+            background: #ffebee;
+        }
+
+        .error-text {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: none;
+            padding-left: 5px;
+        }
+
+        .error-text.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        .required::after {
+            content: ' *';
+            color: var(--danger);
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #2e7d32);
+            color: white;
+            border: none;
+            padding: 16px 30px;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            min-height: 52px;
+            box-shadow: 0 4px 15px rgba(30, 86, 49, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 0 2px 8px rgba(30, 86, 49, 0.3);
+        }
+
+        .btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-secondary:active {
+            background: rgba(30, 86, 49, 0.1);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c0392b);
+            border: none;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tab Switcher */
+        .tab-switcher {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 30px;
+            padding: 5px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 10px;
+            border: none;
+            background: transparent;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #666;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+            min-height: 44px;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Calendar Styles */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        @media (min-width: 480px) {
+            .calendar-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .calendar-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+
+        .calendar-day {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 12px 5px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .calendar-day:active {
+            transform: scale(0.95);
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary);
+        }
+
+        .calendar-day.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(30, 86, 49, 0.4);
+        }
+
+        .calendar-day.full {
+            background: #ffebee;
+            border-color: var(--danger);
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.admin-view {
+            cursor: pointer;
+        }
+
+        .calendar-day .date-label {
+            font-weight: 700;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            margin-bottom: 3px;
+        }
+
+        .calendar-day .slots-left {
+            font-size: clamp(0.65rem, 2vw, 0.75rem);
+            color: #666;
+            font-weight: 600;
+        }
+
+        .calendar-day.selected .slots-left {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .calendar-day.full .slots-left {
+            color: var(--danger);
+            font-weight: 700;
+        }
+
+        /* Date Range Display */
+        .date-range-display {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--primary);
+            border-radius: 15px;
+            padding: 20px 15px;
+            margin: 15px 0;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(30, 86, 49, 0.1);
+        }
+
+        .day-count {
+            font-size: clamp(2.5rem, 8vw, 3rem);
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-label {
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            color: #555;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .date-text {
+            font-size: clamp(0.85rem, 2.5vw, 0.9rem);
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+            word-break: break-word;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 450px;
+            max-height: 85vh;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlide 0.3s ease;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 25px 20px;
+                border-radius: 15px;
+                max-height: 90vh;
+            }
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-title {
+            font-size: clamp(1.3rem, 4vw, 1.5rem);
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .password-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            display: none;
+            font-weight: 600;
+            padding: 8px;
+            background: #ffebee;
+            border-radius: 8px;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        /* Success Card */
+        .success-icon {
+            font-size: clamp(3rem, 10vw, 4rem);
+            color: var(--success);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            text-align: center;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* SMS Notification */
+        .sms-notification {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border: 2px solid var(--info);
+            border-radius: 15px;
+            padding: 20px 15px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+        }
+
+        .sms-notification.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        .sms-notification.error {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-color: var(--danger);
+        }
+
+        .sms-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Rules Box */
+        .rules-box {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #ffd93d;
+            border-radius: 12px;
+            padding: 20px 15px;
+            margin-bottom: 20px;
+            font-size: clamp(0.85rem, 2.5vw, 0.9rem);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .rules-box h3 {
+            color: #856404;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+        }
+
+        .rules-box ul {
+            margin-left: 20px;
+            color: #856404;
+            padding-left: 5px;
+        }
+
+        .rules-box li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* Participant Cards */
+        .registered-list {
+            margin-top: 20px;
+        }
+
+        .participant-card {
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 0 12px 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 480px) {
+            .participant-card {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .participant-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .participant-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .participant-info h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            word-break: break-word;
+        }
+
+        .participant-info p {
+            font-size: clamp(0.8rem, 2.3vw, 0.85rem);
+            color: #666;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .reg-number {
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-height: 40px;
+            min-width: 80px;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+        }
+
+        @media (min-width: 480px) {
+            .delete-btn {
+                align-self: center;
+            }
+        }
+
+        .delete-btn:active {
+            transform: scale(0.95);
+            background: #c0392b;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        @media (min-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, var(--primary), #2e7d32);
+            color: white;
+            padding: 20px 15px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(30, 86, 49, 0.3);
+        }
+
+        .stat-number {
+            font-size: clamp(1.8rem, 6vw, 2.2rem);
+            font-weight: 800;
+            color: var(--secondary);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-label {
+            font-size: clamp(0.8rem, 2.3vw, 0.9rem);
+            margin-top: 8px;
+            opacity: 0.95;
+            font-weight: 600;
+        }
+
+        /* Date Details Modal */
+        .date-details-modal {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .date-participant-item {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .date-participant-item strong {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .date-participant-item small {
+            display: block;
+            margin-top: 5px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Admin Header */
+        .admin-header {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 480px) {
+            .admin-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
+        .admin-header h2 {
+            color: var(--primary);
+            font-size: clamp(1.3rem, 4vw, 1.5rem);
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        /* Small text */
+        small {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2e7d32;
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) {
+            .calendar-day:hover {
+                transform: none;
+            }
+
+            .participant-card:hover {
+                transform: none;
+            }
+        }
+
+        /* Tablet specific */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .container {
+                padding: 20px;
+            }
+
+            .calendar-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
+    </style>
+    <base target="_blank">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="mosque-name" data-en="Town Jumma Masjid" data-ta="நகர ஜும்மா பள்ளிவாசல்"
+                data-si="නගර ජුම්මා මස්ජිදය">Town Jumma Masjid</div>
+            <div class="title" data-en="Ithikaf Registration" data-ta="இஃதிகாஃப் பதிவு" data-si="ඉතිකාෆ් ලියාපදිංචිය">
+                Ithikaf Registration</div>
+            <div class="subtitle" data-en="Nawalapitiya | Ramadan 2026" data-ta="நாவலப்பிட்டிய | ரமலான் 2026"
+                data-si="නාවලපිටිය | රමලාන් 2026">Nawalapitiya | Ramadan 2026</div>
+        </header>
+
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+            <button class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
+            <button class="lang-btn" onclick="setLanguage('si')">සිංහල</button>
+        </div>
+
+        <!-- Main Navigation Tabs -->
+        <div class="tab-switcher" id="mainTabs">
+            <button class="tab-btn active" onclick="showTab('register')" data-en="Register" data-ta="பதிவு"
+                data-si="ලියාපදිංචි වන්න">Register</button>
+            <button class="tab-btn" onclick="showAdminLogin()" data-en="Admin View" data-ta="நிர்வாகி"
+                data-si="පරිපාලක">Admin View</button>
+        </div>
+
+        <!-- Registration Tab -->
+        <div id="registerTab" class="card active">
+            <!-- Rules Section -->
+            <div class="rules-box">
+                <h3>
+                    <span>📋</span>
+                    <span data-en="Important Guidelines" data-ta="முக்கிய வழிகாட்டுதல்கள்"
+                        data-si="වැදගත් මාර්ගෝපදේශ">Important Guidelines</span>
+                </h3>
+                <ul>
+                    <li data-en="Ithikaf is for the last 10 days of Ramadan"
+                        data-ta="இஃதிகாஃப் ரமலானின் கடைசி 10 நாட்களுக்கு" data-si="ඉතිකාෆ් රමලාන් අවසාන දින 10 සඳහා වේ">
+                        Ithikaf is for the last 10 days of Ramadan</li>
+                    <li data-en="Maximum 15 participants per night" data-ta="ஒரு இரவுக்கு அதிகபட்சம் 15 பங்கேற்பாளர்கள்"
+                        data-si="රාත්‍රියකට උපරිමය 15 දෙනෙකි">Maximum 15 participants per night</li>
+                    <li data-en="Phone must start with 07 and be 10 digits"
+                        data-ta="தொலைபேசி 07 முதல் தொடங்கி 10 எண்களாக இருக்க வேண்டும்"
+                        data-si="දුරකථනය 07 ආරම්භ වී ඉලක්කම් 10 ක් විය යුතුය">Phone must start with 07 and be 10 digits
+                    </li>
+                    <li data-en="Select your dates based on availability below"
+                        data-ta="கீழே உள்ள கிடைக்கும் தேதிகளின் அடிப்படையில் தேர்வு செய்க"
+                        data-si="පහත ඇති තොගය අනුව ඔබගේ දින තෝරන්න">Select your dates based on availability below</li>
+                </ul>
+            </div>
+
+            <h3 style="color: var(--primary); margin-bottom: 15px; text-align: center; font-size: clamp(1.1rem, 3.5vw, 1.3rem);"
+                data-en="Daily Availability" data-ta="தினசரி கிடைக்கும் தன்மை" data-si="දිනපතා තොගය">Daily Availability
+            </h3>
+            <p style="text-align: center; color: #666; margin-bottom: 20px; font-size: clamp(0.85rem, 2.5vw, 0.9rem);"
+                data-en="Click dates to select your stay period"
+                data-ta="உங்கள் தங்கும் காலத்தைத் தேர்வு செய்ய தேதிகளைக் கிளிக் செய்க"
+                data-si="ඔබගේ වාසය කාලය තෝරා ගැනීමට දින මත ක්ලික් කරන්න">Click dates to select your stay period</p>
+
+            <!-- Calendar Grid -->
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- Generated by JavaScript -->
+            </div>
+
+            <!-- Date Selection Summary -->
+            <div class="date-range-display" id="dateSummary" style="display: none;">
+                <div class="day-count" id="dayCount">0</div>
+                <div class="day-label" data-en="Days Selected" data-ta="தேர்ந்தெடுக்கப்பட்ட நாட்கள்"
+                    data-si="තෝරාගත් දින">Days Selected</div>
+                <div class="date-text" id="dateRangeText"></div>
+            </div>
+
+            <!-- Registration Form -->
+            <form id="ithikafForm" onsubmit="handleRegister(event)">
+                <input type="hidden" id="checkInDate" required>
+                <input type="hidden" id="checkOutDate" required>
+
+                <div class="form-group">
+                    <label class="required" data-en="Full Name" data-ta="முழு பெயர்" data-si="සම්පූර්ණ නම">Full
+                        Name</label>
+                    <input type="text" id="fullName" required data-placeholder-en="Enter your full name"
+                        data-placeholder-ta="உங்கள் முழு பெயரை உள்ளிடவும்"
+                        data-placeholder-si="ඔබේ සම්පූර්ණ නම ඇතුළත් කරන්න" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label class="required" data-en="Date of Birth" data-ta="பிறந்த தேதி" data-si="උපන් දිනය">Date of
+                        Birth</label>
+                    <input type="date" id="dob" required max="2008-03-09" onchange="calculateAge()">
+                </div>
+
+                <div class="form-group">
+                    <label class="required" data-en="NIC Number" data-ta="NIC எண்" data-si="NIC අංකය">NIC Number</label>
+                    <input type="text" id="nic" required pattern="([0-9]{9}[VXvx]|[0-9]{12})"
+                        title="Old NIC: 123456789V or New NIC: 200012345678"
+                        data-placeholder-en="123456789V or 200012345678"
+                        data-placeholder-ta="123456789V அல்லது 200012345678"
+                        data-placeholder-si="123456789V හෝ 200012345678" placeholder="123456789V or 200012345678"
+                        oninput="validateNIC()">
+                    <small data-en="Old: 123456789V / New: 200012345678"
+                        data-ta="பழைய: 123456789V / புதிய: 200012345678"
+                        data-si="පරණ: 123456789V / අලුත්: 200012345678">Old: 123456789V / New: 200012345678</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="required" data-en="Phone Number" data-ta="தொலைபேசி எண்" data-si="දුරකථන අංකය">Phone
+                        Number</label>
+                    <input type="tel" id="phone" pattern="07[0-9]{8}" required data-placeholder-en="07XXXXXXXX"
+                        data-placeholder-ta="07XXXXXXXX" data-placeholder-si="07XXXXXXXX" placeholder="07XXXXXXXX"
+                        oninput="validatePhone()">
+                    <div class="error-text" id="phoneError" data-en="Must start with 07 and be 10 digits"
+                        data-ta="07 முதல் தொடங்கி 10 எண்களாக இருக்க வேண்டும்"
+                        data-si="07 ආරම්භ වී ඉලක්කම් 10 ක් විය යුතුය">Must start with 07 and be 10 digits</div>
+                </div>
+
+                <div class="form-group">
+                    <label data-en="Emergency Contact" data-ta="அவசர தொடர்பு" data-si="හදිසි සම්බන්ධතාව">Emergency
+                        Contact</label>
+                    <input type="tel" id="emergency" pattern="07[0-9]{8}" data-placeholder-en="07XXXXXXXX"
+                        data-placeholder-ta="07XXXXXXXX" data-placeholder-si="07XXXXXXXX" placeholder="07XXXXXXXX"
+                        oninput="validateEmergency()">
+                    <div class="error-text" id="emergencyError" data-en="Cannot be same as phone number"
+                        data-ta="தொலைபேசி எண்ணுடன் ஒரே மாதிரியாக இருக்க முடியாது"
+                        data-si="දුරකථන අංකය හා සමාන විය නොහැක">Cannot be same as phone number</div>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">
+                    <span id="btnText" data-en="Register for Ithikaf" data-ta="இஃதிகாஃபுக்கு பதிவு செய்க"
+                        data-si="ඉතිකාෆ් සඳහා ලියාපදිංචි වන්න">Register for Ithikaf</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successCard" class="card" style="display: none;">
+            <div class="success-icon">✅</div>
+            <div class="success-message" data-en="Registration Successful!" data-ta="பதிவு வெற்றிகரமாக முடிந்தது!"
+                data-si="ලියාපදිංචිය සාර්ථකයි!">Registration Successful!</div>
+
+            <!-- SMS Notification -->
+            <div class="sms-notification" id="smsNotification">
+                <div class="sms-icon" id="smsIcon">📱</div>
+                <div style="font-weight: bold; color: var(--info); margin-bottom: 5px;" id="smsTitle"
+                    data-en="SMS Confirmation Sent!" data-ta="SMS உறுதிப்படுத்தல் அனுப்பப்பட்டது!"
+                    data-si="SMS තහවුරු කිරීම යවන ලදී!">SMS Confirmation Sent!</div>
+                <div style="font-size: 0.9rem; color: #555;" id="smsDetails"></div>
+            </div>
+
+            <div
+                style="background: #e8f5e9; padding: 20px 15px; border-radius: 12px; margin: 20px 0; text-align: center;">
+                <div class="reg-number" id="successRegNumber"
+                    style="font-size: clamp(1.1rem, 3.5vw, 1.3rem); margin-bottom: 10px;"></div>
+                <p
+                    style="font-size: clamp(1rem, 3vw, 1.1rem); color: var(--primary); font-weight: bold; margin-bottom: 10px;">
+                    <span data-en="Your Dates:" data-ta="உங்கள் தேதிகள்:" data-si="ඔබගේ දිනයන්:">Your Dates:</span>
+                    <span id="successDates"></span>
+                </p>
+                <p style="color: #666; font-size: clamp(0.9rem, 2.5vw, 1rem);"
+                    data-en="Please arrive at the mosque before Maghrib on your check-in date."
+                    data-ta="உங்கள் செக்-இன் தேதியில் மாக்ரிபுக்கு முன்பாக பள்ளிவாசலுக்கு வரவும்."
+                    data-si="කරුණාකර ඔබගේ පැමිණීමේ දිනයේ මග්‍රිබ් යාච්ඤාවට පෙර මස්ජිද් වෙත පැමිණෙන්න.">Please arrive at
+                    the mosque before Maghrib on your check-in date.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="resetForm()" data-en="Register Another"
+                data-ta="மற்றொருவரை பதிவு செய்க" data-si="වෙනත් අයෙකු ලියාපදිංචි කරන්න">Register Another</button>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="adminModal" class="modal-overlay">
+            <div class="modal-content">
+                <h2 class="modal-title" data-en="Admin Login" data-ta="நிர்வாகி உள்நுழைவு" data-si="පරිපාලක පිවිසුම">
+                    Admin Login</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 20px; font-size: 0.9rem;"
+                    data-en="Enter admin password to view registrations"
+                    data-ta="பதிவுகளைக் காண நிர்வாகி கடவுச்சொல்லை உள்ளிடவும்"
+                    data-si="ලියාපදිංචි කිරීම් දැකීමට පරිපාලක මුරපදය ඇතුළත් කරන්න">Enter admin password to view
+                    registrations</p>
+                <input type="password" id="adminPassword" class="password-input" placeholder="••••••">
+                <div id="loginError" class="error-msg" data-en="Incorrect password" data-ta="தவறான கடவுச்சொல்"
+                    data-si="සාවද්‍ය මුරපදය">Incorrect password</div>
+                <button class="btn" onclick="verifyAdmin()" data-en="Login" data-ta="உள்நுழை"
+                    data-si="පිවිසෙන්න">Login</button>
+                <button class="btn btn-secondary" onclick="closeAdminLogin()" data-en="Cancel" data-ta="ரத்து"
+                    data-si="අවලංගු කරන්න">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Date Details Modal -->
+        <div id="dateDetailsModal" class="modal-overlay">
+            <div class="modal-content date-details-modal">
+                <h2 class="modal-title" id="dateDetailsTitle">Participants</h2>
+                <div id="dateDetailsContent"></div>
+                <button class="btn btn-secondary" onclick="closeDateDetails()" data-en="Close" data-ta="மூடு"
+                    data-si="වසන්න">Close</button>
+            </div>
+        </div>
+
+        <!-- Admin Tab -->
+        <div id="adminTab" class="card" style="display: none;">
+            <div class="admin-header">
+                <h2 data-en="Admin Dashboard" data-ta="நிர்வாகி முகப்பு" data-si="පරිපාලක උපකරණ පනිම">Admin Dashboard
+                </h2>
+                <button onclick="logoutAdmin()" class="btn btn-secondary"
+                    style="width: auto; padding: 10px 25px; font-size: 0.9rem; margin-top: 0;" data-en="Logout"
+                    data-ta="வெளியேறு" data-si="පිටවන්න">Logout</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number" id="totalRegistrations">0</div>
+                    <div class="stat-label" data-en="Total Registrations" data-ta="மொத்த பதிவுகள்"
+                        data-si="මුළු ලියාපදිංචි වීම්">Total Registrations</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="fullyBookedNights">0</div>
+                    <div class="stat-label" data-en="Fully Booked Nights"
+                        data-ta="முழுமையாக முன்பதிவு செய்யப்பட்ட இரவுகள்" data-si="සම්පූර්ණයෙන්ම වෙන්කරගත් රාත්‍රීන්">
+                        Fully Booked Nights</div>
+                </div>
+            </div>
+
+            <h3 style="color: var(--primary); margin-bottom: 15px; font-size: clamp(1.1rem, 3.5vw, 1.3rem);"
+                data-en="Daily Occupancy (Click date for details)"
+                data-ta="தினசரி நிரம்பளவு (விவரங்களுக்கு தேதியைக் கிளிக் செய்க)"
+                data-si="දිනපතා පිරීම (විස්තර සඳහා දිනය මත ක්ලික් කරන්න)">Daily Occupancy (Click date for details)</h3>
+            <div id="adminCalendar" class="calendar-grid" style="margin-bottom: 30px;">
+                <!-- Generated by JS -->
+            </div>
+
+            <h3 style="color: var(--primary); margin-bottom: 15px; font-size: clamp(1.1rem, 3.5vw, 1.3rem);"
+                data-en="All Registered Participants" data-ta="அனைத்து பதிவு செய்த பங்கேற்பாளர்கள்"
+                data-si="සියලුම ලියාපදිංචි වූ පුද්ගලයන්">All Registered Participants</h3>
+            <div id="participantsList" class="registered-list">
+                <!-- Participants will be listed here -->
+            </div>
+
+            <button class="btn btn-danger" onclick="clearAllData()" style="margin-top: 20px;"
+                data-en="Clear All Data (Demo Only)" data-ta="அனைத்து தரவுகளையும் அழிக்கவும் (டெமோ)"
+                data-si="සියලුම දත්ත මකන්න (ප්‍රදර්ශනය පමණි)">Clear All Data (Demo Only)</button>
+        </div>
+    </div>
+
+    <script>
+
+
+        // Other Configuration
+        const MAX_SLOTS = 15;
+        const ADMIN_PASSWORD = 'nawalapitiya2025';
+        const RAMADAN_DATES = [
+            '2026-03-09', '2026-03-10', '2026-03-11', '2026-03-12', '2026-03-13',
+            '2026-03-14', '2026-03-15', '2026-03-16', '2026-03-17', '2026-03-18', '2026-03-19'
+        ];
+
+        // State
+        let participants = JSON.parse(localStorage.getItem('ithikaf_participants')) || [];
+        let currentLang = 'en';
+        let selectedDates = { checkIn: null, checkOut: null };
+
+        // ==================== TEXT.LK SMS FUNCTION ====================
+        // ==================== SECURE SMS FUNCTION (CALL BACKEND) ====================
+        async function sendSMS(phoneNumber, message) {
+            try {
+                const response = await fetch("http://localhost:5000/send-sms", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        phone: "94" + phoneNumber.substring(1), // convert 07 -> 947
+                        message: message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    return { success: true };
+                } else {
+                    return { success: false, error: data.error };
+                }
+            } catch (error) {
+                console.error("Backend SMS Error:", error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // ==================== TRANSLATIONS ====================
+        const translations = {
+            en: {
+                register: "Register for Ithikaf",
+                fullName: "Full Name",
+                dob: "Date of Birth",
+                nic: "NIC Number",
+                phone: "Phone Number",
+                emergency: "Emergency Contact",
+                success: "Registration Successful!",
+                arriveMsg: "Please arrive at the mosque before Maghrib on your check-in date.",
+                registerAnother: "Register Another",
+                participants: "Registered Participants",
+                daysSelected: "Days Selected",
+                yourDates: "Your Dates:",
+                selectCheckIn: "Select Check-in Date",
+                selectCheckOut: "Select Check-out Date",
+                nights: "nights",
+                adminLogin: "Admin Login",
+                enterPassword: "Enter admin password to view registrations",
+                incorrectPassword: "Incorrect password",
+                login: "Login",
+                cancel: "Cancel",
+                logout: "Logout",
+                totalRegistrations: "Total Registrations",
+                fullyBookedNights: "Fully Booked Nights",
+                dailyOccupancy: "Daily Occupancy (Click date for details)",
+                clear: "Clear All Data (Demo Only)",
+                slotsAvailable: "slots",
+                full: "FULL",
+                selectDates: "Click dates to select your stay period",
+                guidelines: "Important Guidelines",
+                rule1: "Ithikaf is for the last 10 days of Ramadan",
+                rule2: "Maximum 15 participants per night",
+                rule3: "Phone must start with 07 and be 10 digits",
+                rule4: "Select your dates based on availability below",
+                namePlaceholder: "Enter your full name",
+                phonePlaceholder: "07XXXXXXXX",
+                emergencyPlaceholder: "07XXXXXXXX",
+                nicHelp: "Old: 123456789V / New: 200012345678",
+                close: "Close",
+                age: "Age",
+                years: "years",
+                smsSent: "SMS Confirmation Sent!",
+                smsFailed: "Registration saved but SMS failed to send",
+                smsTo: "Confirmation sent to",
+                duplicateNIC: "This NIC is already registered for these dates",
+                phoneError: "Must start with 07 and be 10 digits",
+                emergencyError: "Cannot be same as phone number",
+                pleaseWait: "Please wait..."
+            },
+            ta: {
+                register: "இஃதிகாஃபுக்கு பதிவு செய்க",
+                fullName: "முழு பெயர்",
+                dob: "பிறந்த தேதி",
+                nic: "NIC எண்",
+                phone: "தொலைபேசி எண்",
+                emergency: "அவசர தொடர்பு",
+                success: "பதிவு வெற்றிகரமாக முடிந்தது!",
+                arriveMsg: "உங்கள் செக்-இன் தேதியில் மாக்ரிபுக்கு முன்பாக பள்ளிவாசலுக்கு வரவும்.",
+                registerAnother: "மற்றொருவரை பதிவு செய்க",
+                participants: "பதிவு செய்த பங்கேற்பாளர்கள்",
+                daysSelected: "தேர்ந்தெடுக்கப்பட்ட நாட்கள்",
+                yourDates: "உங்கள் தேதிகள்:",
+                selectCheckIn: "செக்-இன் தேதியைத் தேர்வு செய்க",
+                selectCheckOut: "செக்-அவுட் தேதியைத் தேர்வு செய்க",
+                nights: "இரவுகள்",
+                adminLogin: "நிர்வாகி உள்நுழைவு",
+                enterPassword: "பதிவுகளைக் காண நிர்வாகி கடவுச்சொல்லை உள்ளிடவும்",
+                incorrectPassword: "தவறான கடவுச்சொல்",
+                login: "உள்நுழை",
+                cancel: "ரத்து",
+                logout: "வெளியேறு",
+                totalRegistrations: "மொத்த பதிவுகள்",
+                fullyBookedNights: "முழுமையாக முன்பதிவு செய்யப்பட்ட இரவுகள்",
+                dailyOccupancy: "தினசரி நிரம்பளவு (விவரங்களுக்கு தேதியைக் கிளிக் செய்க)",
+                clear: "அனைத்து தரவுகளையும் அழிக்கவும் (டெமோ)",
+                slotsAvailable: "இடங்கள்",
+                full: "நிரம்பிவிட்டது",
+                selectDates: "உங்கள் தங்கும் காலத்தைத் தேர்வு செய்ய தேதிகளைக் கிளிக் செய்க",
+                guidelines: "முக்கிய வழிகாட்டுதல்கள்",
+                rule1: "இஃதிகாஃப் ரமலானின் கடைசி 10 நாட்களுக்கு",
+                rule2: "ஒரு இரவுக்கு அதிகபட்சம் 15 பங்கேற்பாளர்கள்",
+                rule3: "தொலைபேசி 07 முதல் தொடங்கி 10 எண்களாக இருக்க வேண்டும்",
+                rule4: "கீழே உள்ள கிடைக்கும் தேதிகளின் அடிப்படையில் தேர்வு செய்க",
+                namePlaceholder: "உங்கள் முழு பெயரை உள்ளிடவும்",
+                phonePlaceholder: "07XXXXXXXX",
+                emergencyPlaceholder: "07XXXXXXXX",
+                nicHelp: "பழைய: 123456789V / புதிய: 200012345678",
+                close: "மூடு",
+                age: "வயது",
+                years: "வயது",
+                smsSent: "SMS உறுதிப்படுத்தல் அனுப்பப்பட்டது!",
+                smsFailed: "பதிவு சேமிக்கப்பட்டது ஆனால் SMS அனுப்ப முடியவில்லை",
+                smsTo: "உறுதிப்படுத்தல் அனுப்பப்பட்டது",
+                duplicateNIC: "இந்த NIC ஏற்கெனவே இந்த தேதிகளுக்கு பதிவு செய்யப்பட்டுள்ளது",
+                phoneError: "07 முதல் தொடங்கி 10 எண்களாக இருக்க வேண்டும்",
+                emergencyError: "தொலைபேசி எண்ணுடன் ஒரே மாதிரியாக இருக்க முடியாது",
+                pleaseWait: "காத்திருக்கவும்..."
+            },
+            si: {
+                register: "ඉතිකාෆ් සඳහා ලියාපදිංචි වන්න",
+                fullName: "සම්පූර්ණ නම",
+                dob: "උපන් දිනය",
+                nic: "NIC අංකය",
+                phone: "දුරකථන අංකය",
+                emergency: "හදිසි සම්බන්ධතාව",
+                success: "ලියාපදිංචිය සාර්ථකයි!",
+                arriveMsg: "කරුණාකර ඔබගේ පැමිණීමේ දිනයේ මග්‍රිබ් යාච්ඤාවට පෙර මස්ජිද් වෙත පැමිණෙන්න.",
+                registerAnother: "වෙනත් අයෙකු ලියාපදිංචි කරන්න",
+                participants: "ලියාපදිංචි වූ පුද්ගලයන්",
+                daysSelected: "තෝරාගත් දින",
+                yourDates: "ඔබගේ දිනයන්:",
+                selectCheckIn: "පැමිණීමේ දිනය තෝරන්න",
+                selectCheckOut: "පිටවන දිනය තෝරන්න",
+                nights: "රාත්‍රීන්",
+                adminLogin: "පරිපාලක පිවිසුම",
+                enterPassword: "ලියාපදිංචි කිරීම් දැකීමට පරිපාලක මුරපදය ඇතුළත් කරන්න",
+                incorrectPassword: "සාවද්‍ය මුරපදය",
+                login: "පිවිසෙන්න",
+                cancel: "අවලංගු කරන්න",
+                logout: "පිටවන්න",
+                totalRegistrations: "මුළු ලියාපදිංචි වීම්",
+                fullyBookedNights: "සම්පූර්ණයෙන්ම වෙන්කරගත් රාත්‍රීන්",
+                dailyOccupancy: "දිනපතා පිරීම (විස්තර සඳහා දිනය මත ක්ලික් කරන්න)",
+                clear: "සියලුම දත්ත මකන්න (ප්‍රදර්ශනය පමණි)",
+                slotsAvailable: "තැන්",
+                full: "පිරී ඇත",
+                selectDates: "ඔබගේ වාසය කාලය තෝරා ගැනීමට දින මත ක්ලික් කරන්න",
+                guidelines: "වැදගත් මාර්ගෝපදේශ",
+                rule1: "ඉතිකාෆ් රමලාන් අවසාන දින 10 සඳහා වේ",
+                rule2: "රාත්‍රියකට උපරිමය 15 දෙනෙකි",
+                rule3: "දුරකථනය 07 ආරම්භ වී ඉලක්කම් 10 ක් විය යුතුය",
+                rule4: "පහත ඇති තොගය අනුව ඔබගේ දින තෝරන්න",
+                namePlaceholder: "ඔබේ සම්පූර්ණ නම ඇතුළත් කරන්න",
+                phonePlaceholder: "07XXXXXXXX",
+                emergencyPlaceholder: "07XXXXXXXX",
+                nicHelp: "පරණ: 123456789V / අලුත්: 200012345678",
+                close: "වසන්න",
+                age: "වයස",
+                years: "වසර",
+                smsSent: "SMS තහවුරු කිරීම යවන ලදී!",
+                smsFailed: "ලියාපදිංචිය සුරකින ලදී නමුත් SMS යැවීම අසාර්ථක විය",
+                smsTo: "තහවුරු කිරීම යවන ලදී",
+                duplicateNIC: "මෙම NIC එම දිනවලට දැනටමත් ලියාපදිංචි වී ඇත",
+                phoneError: "07 ආරම්භ වී ඉලක්කම් 10 ක් විය යුතුය",
+                emergencyError: "දුරකථන අංකය හා සමාන විය නොහැක",
+                pleaseWait: "කරුණාකර රැඳී සිටින්න..."
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function () {
+            generateCalendar();
+            updateParticipantsList();
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                showAdminPanel();
+            }
+        });
+
+        // Generate Calendar
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            RAMADAN_DATES.forEach(date => {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                dayDiv.dataset.date = date;
+
+                const dateObj = new Date(date);
+                const dayName = dateObj.toLocaleDateString('en', { weekday: 'short' });
+                const dayNum = dateObj.getDate();
+
+                const count = getBookingCount(date);
+                const isFull = count >= MAX_SLOTS;
+
+                if (isFull) {
+                    dayDiv.classList.add('full');
+                }
+
+                dayDiv.innerHTML = `
+                    <div class="date-label">${dayName} ${dayNum}</div>
+                    <div class="slots-left">${isFull ? translations[currentLang].full : `${MAX_SLOTS - count} ${translations[currentLang].slotsAvailable}`}</div>
+                `;
+
+                dayDiv.onclick = () => selectDate(date);
+                grid.appendChild(dayDiv);
+            });
+        }
+
+        // Get booking count for a specific date
+        function getBookingCount(date) {
+            return participants.filter(p => {
+                const checkIn = new Date(p.checkIn);
+                const checkOut = new Date(p.checkOut);
+                const checkDate = new Date(date);
+                return checkDate >= checkIn && checkDate < checkOut;
+            }).length;
+        }
+
+        // Get participants for a specific date
+        function getParticipantsForDate(date) {
+            return participants.filter(p => {
+                const checkIn = new Date(p.checkIn);
+                const checkOut = new Date(p.checkOut);
+                const checkDate = new Date(date);
+                return checkDate >= checkIn && checkDate < checkOut;
+            });
+        }
+
+        // Check if dates overlap
+        function datesOverlap(start1, end1, start2, end2) {
+            const s1 = new Date(start1);
+            const e1 = new Date(end1);
+            const s2 = new Date(start2);
+            const e2 = new Date(end2);
+            return s1 < e2 && s2 < e1;
+        }
+
+        // Check for duplicate NIC registration
+        function checkDuplicateNIC(nic, checkIn, checkOut) {
+            return participants.some(p => {
+                if (p.nic.toUpperCase() !== nic.toUpperCase()) return false;
+                return datesOverlap(checkIn, checkOut, p.checkIn, p.checkOut);
+            });
+        }
+
+        // Calculate Age from DOB
+        function calculateAge() {
+            const dobInput = document.getElementById('dob');
+            const dob = new Date(dobInput.value);
+            const today = new Date('2026-03-09');
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        // Validate NIC
+        function validateNIC() {
+            const nicInput = document.getElementById('nic');
+            const nic = nicInput.value.toUpperCase();
+            const pattern = /^([0-9]{9}[VX]|[0-9]{12})$/;
+
+            if (nic && !pattern.test(nic)) {
+                nicInput.setCustomValidity(currentLang === 'en' ? 'Invalid NIC format' :
+                    currentLang === 'ta' ? 'தவறான NIC வடிவம்' :
+                        'සාවද්‍ය NIC ආකෘතිය');
+            } else {
+                nicInput.setCustomValidity('');
+            }
+        }
+
+        // Validate Phone
+        function validatePhone() {
+            const phone = document.getElementById('phone');
+            const error = document.getElementById('phoneError');
+            const pattern = /^07[0-9]{8}$/;
+
+            if (phone.value && !pattern.test(phone.value)) {
+                phone.classList.add('error');
+                error.classList.add('show');
+                return false;
+            } else {
+                phone.classList.remove('error');
+                error.classList.remove('show');
+                return true;
+            }
+        }
+
+        // Validate Emergency Contact
+        function validateEmergency() {
+            const phone = document.getElementById('phone').value;
+            const emergency = document.getElementById('emergency');
+            const error = document.getElementById('emergencyError');
+
+            if (emergency.value && emergency.value === phone) {
+                emergency.classList.add('error');
+                error.classList.add('show');
+                return false;
+            } else {
+                emergency.classList.remove('error');
+                error.classList.remove('show');
+                return true;
+            }
+        }
+
+        // Generate Registration Number
+        function generateRegNumber() {
+            const year = 2026;
+            const prefix = 'ITKF';
+            const existingNums = participants.map(p => {
+                const match = p.regNumber.match(/ITKF2026(\d+)/);
+                return match ? parseInt(match[1]) : 0;
+            });
+            const maxNum = Math.max(0, ...existingNums);
+            const nextNum = maxNum + 1;
+            return `${prefix}${year}${String(nextNum).padStart(3, '0')}`;
+        }
+
+        // Select Date
+        function selectDate(date) {
+            if (getBookingCount(date) >= MAX_SLOTS) {
+                return;
+            }
+
+            if (!selectedDates.checkIn || (selectedDates.checkIn && selectedDates.checkOut)) {
+                selectedDates = { checkIn: date, checkOut: null };
+            } else {
+                if (new Date(date) <= new Date(selectedDates.checkIn)) {
+                    alert(currentLang === 'en' ? 'Check-out date must be after check-in date' :
+                        currentLang === 'ta' ? 'செக்-அவுட் தேதி செக்-இன் தேதிக்குப் பிறகு இருக்க வேண்டும்' :
+                            'පිටවන දිනය පැමිණීමේ දිනයට පසුව තිබිය යුතුය');
+                    return;
+                }
+
+                const start = new Date(selectedDates.checkIn);
+                const end = new Date(date);
+                const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+                if (diffDays > 10) {
+                    alert(currentLang === 'en' ? 'Maximum 10 days allowed for Ithikaf' :
+                        currentLang === 'ta' ? 'இஃதிகாஃபுக்கு அதிகபட்சம் 10 நாட்கள் மட்டுமே அனுமதிக்கப்படுகிறது' :
+                            'ඉතිකාෆ් සඳහා උපරිම දින 10 ක් පමණි');
+                    return;
+                }
+
+                selectedDates.checkOut = date;
+            }
+
+            updateCalendarSelection();
+            updateDateSummary();
+        }
+
+        // Update Calendar Visual Selection
+        function updateCalendarSelection() {
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.classList.remove('selected');
+                const date = day.dataset.date;
+
+                if (selectedDates.checkIn && !selectedDates.checkOut) {
+                    if (date === selectedDates.checkIn) {
+                        day.classList.add('selected');
+                    }
+                } else if (selectedDates.checkIn && selectedDates.checkOut) {
+                    const d = new Date(date);
+                    const start = new Date(selectedDates.checkIn);
+                    const end = new Date(selectedDates.checkOut);
+
+                    if (d >= start && d < end) {
+                        day.classList.add('selected');
+                    }
+                }
+            });
+        }
+
+        // Update Date Summary Display
+        function updateDateSummary() {
+            const summary = document.getElementById('dateSummary');
+            const dayCount = document.getElementById('dayCount');
+            const dateText = document.getElementById('dateRangeText');
+            const checkInInput = document.getElementById('checkInDate');
+            const checkOutInput = document.getElementById('checkOutDate');
+
+            if (!selectedDates.checkIn) {
+                summary.style.display = 'none';
+                return;
+            }
+
+            checkInInput.value = selectedDates.checkIn;
+
+            if (!selectedDates.checkOut) {
+                summary.style.display = 'block';
+                dayCount.textContent = '?';
+                dateText.textContent = translations[currentLang].selectCheckOut;
+                return;
+            }
+
+            checkOutInput.value = selectedDates.checkOut;
+
+            const start = new Date(selectedDates.checkIn);
+            const end = new Date(selectedDates.checkOut);
+            const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+            summary.style.display = 'block';
+            dayCount.textContent = diffDays;
+
+            const startStr = start.toLocaleDateString(currentLang === 'en' ? 'en-US' : currentLang === 'ta' ? 'ta-IN' : 'si-LK', { month: 'short', day: 'numeric' });
+            const endStr = end.toLocaleDateString(currentLang === 'en' ? 'en-US' : currentLang === 'ta' ? 'ta-IN' : 'si-LK', { month: 'short', day: 'numeric' });
+
+            dateText.textContent = `${startStr} - ${endStr} (${diffDays} ${translations[currentLang].nights})`;
+        }
+
+        // Language Switcher
+        function setLanguage(lang) {
+            currentLang = lang;
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (el.hasAttribute(`data-${lang}`)) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = el.getAttribute(`data-placeholder-${lang}`) || el.getAttribute(`data-${lang}`);
+                    } else {
+                        el.textContent = el.getAttribute(`data-${lang}`);
+                    }
+                }
+            });
+
+            generateCalendar();
+            updateCalendarSelection();
+            updateDateSummary();
+            if (document.getElementById('adminTab').style.display === 'block') {
+                updateParticipantsList();
+            }
+        }
+
+        // Tab Switcher
+        function showTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (tab === 'register') {
+                document.getElementById('registerTab').style.display = 'block';
+                document.getElementById('adminTab').style.display = 'none';
+                document.getElementById('successCard').style.display = 'none';
+            }
+        }
+
+        // Admin Login
+        function showAdminLogin() {
+            document.getElementById('adminModal').classList.add('active');
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+            setTimeout(() => document.getElementById('adminPassword').focus(), 100);
+        }
+
+        function closeAdminLogin() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+
+        function verifyAdmin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                closeAdminLogin();
+                showAdminPanel();
+            } else {
+                document.getElementById('loginError').classList.add('show');
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
+        document.getElementById('adminPassword')?.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') verifyAdmin();
+        });
+
+        function showAdminPanel() {
+            document.getElementById('registerTab').style.display = 'none';
+            document.getElementById('adminTab').style.display = 'block';
+            document.getElementById('mainTabs').querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('mainTabs').querySelectorAll('.tab-btn')[0].classList.remove('active');
+            updateParticipantsList();
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('adminLoggedIn');
+            document.getElementById('adminTab').style.display = 'none';
+            document.getElementById('registerTab').style.display = 'block';
+            document.getElementById('mainTabs').querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('mainTabs').querySelectorAll('.tab-btn')[1].classList.remove('active');
+        }
+
+        // Handle Registration
+        async function handleRegister(e) {
+            e.preventDefault();
+
+            // Validate phone
+            if (!validatePhone()) {
+                document.getElementById('phone').focus();
+                return;
+            }
+
+            // Validate emergency contact
+            if (!validateEmergency()) {
+                document.getElementById('emergency').focus();
+                return;
+            }
+
+            if (!selectedDates.checkIn || !selectedDates.checkOut) {
+                alert(currentLang === 'en' ? 'Please select both check-in and check-out dates' :
+                    currentLang === 'ta' ? 'தயவுசெய்து செக்-இன் மற்றும் செக்-அவுட் தேதிகளைத் தேர்வு செய்க' :
+                        'කරුණාකර පැමිණීමේ සහ පිටවන දින දෙකම තෝරන්න');
+                return;
+            }
+
+            const nic = document.getElementById('nic').value.toUpperCase();
+
+            // Check for duplicate NIC on same dates
+            if (checkDuplicateNIC(nic, selectedDates.checkIn, selectedDates.checkOut)) {
+                alert(translations[currentLang].duplicateNIC);
+                return;
+            }
+
+            // Validate all dates in range
+            const start = new Date(selectedDates.checkIn);
+            const end = new Date(selectedDates.checkOut);
+            let current = new Date(start);
+
+            while (current < end) {
+                const dateStr = current.toISOString().split('T')[0];
+                if (getBookingCount(dateStr) >= MAX_SLOTS) {
+                    alert(currentLang === 'en' ? `Sorry, ${dateStr} is now full. Please select different dates.` :
+                        currentLang === 'ta' ? `மன்னிக்கவும், ${dateStr} இப்போது நிரம்பிவிட்டது. வேறு தேதிகளைத் தேர்வு செய்க.` :
+                            `කනගාටුයි, ${dateStr} දැන් පිරී ඇත. කරුණාකර වෙනත් දින තෝරන්න.`);
+                    return;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const originalText = btnText.textContent;
+            submitBtn.disabled = true;
+            btnText.innerHTML = `<span class="spinner"></span> ${translations[currentLang].pleaseWait}`;
+
+            const age = calculateAge();
+            const regNumber = generateRegNumber();
+            const phone = document.getElementById('phone').value;
+            const name = document.getElementById('fullName').value;
+
+            const participant = {
+                id: Date.now(),
+                regNumber: regNumber,
+                name: name,
+                dob: document.getElementById('dob').value,
+                age: age,
+                nic: nic,
+                phone: phone,
+                emergency: document.getElementById('emergency').value,
+                checkIn: selectedDates.checkIn,
+                checkOut: selectedDates.checkOut,
+                registeredAt: new Date().toLocaleString()
+            };
+
+            participants.push(participant);
+            localStorage.setItem('ithikaf_participants', JSON.stringify(participants));
+
+            // SAVE TO FIREBASE
+            await saveParticipantToFirebase(participant);
+
+            // Prepare SMS message
+            const startStr = new Date(selectedDates.checkIn).toLocaleDateString();
+            const endStr = new Date(selectedDates.checkOut).toLocaleDateString();
+            const smsMessage = `Assalamu Alaikum ${name}! Your Ithikaf registration (${regNumber}) is confirmed from ${startStr} to ${endStr}. Please arrive before Maghrib on ${startStr}. Town Jumma Masjid Nawalapitiya. Jazakallah!`;
+
+            // Send SMS via text.lk
+            const smsResult = await sendSMS(phone, smsMessage);
+
+            // Reset button
+            submitBtn.disabled = false;
+            btnText.textContent = originalText;
+
+            // Show success
+            document.getElementById('registerTab').style.display = 'none';
+            document.getElementById('successCard').style.display = 'block';
+            document.getElementById('successCard').classList.add('active');
+
+            // Show SMS notification (success or failure)
+            const smsNotif = document.getElementById('smsNotification');
+            const smsIcon = document.getElementById('smsIcon');
+            const smsTitle = document.getElementById('smsTitle');
+            const smsDetails = document.getElementById('smsDetails');
+
+            if (smsResult.success) {
+                smsNotif.classList.remove('error');
+                smsIcon.textContent = '📱';
+                smsTitle.textContent = translations[currentLang].smsSent;
+                smsDetails.textContent = `${translations[currentLang].smsTo}: ${phone}`;
+                smsTitle.style.color = 'var(--info)';
+            } else {
+                smsNotif.classList.add('error');
+                smsIcon.textContent = '⚠️';
+                smsTitle.textContent = translations[currentLang].smsFailed;
+                smsDetails.textContent = `Error: ${smsResult.error || 'Network error'}`;
+                smsTitle.style.color = 'var(--danger)';
+            }
+            smsNotif.classList.add('show');
+
+            document.getElementById('successRegNumber').textContent = regNumber;
+            document.getElementById('successDates').textContent = `${startStr} - ${endStr}`;
+
+            generateCalendar();
+        }
+
+        // Reset Form
+        function resetForm() {
+            document.getElementById('ithikafForm').reset();
+            selectedDates = { checkIn: null, checkOut: null };
+            document.getElementById('successCard').style.display = 'none';
+            document.getElementById('smsNotification').classList.remove('show');
+            document.getElementById('registerTab').style.display = 'block';
+            document.getElementById('registerTab').classList.add('active');
+            document.getElementById('dateSummary').style.display = 'none';
+            document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+            document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+            generateCalendar();
+        }
+
+        // Show Date Details in Admin
+        function showDateDetails(date) {
+            const modal = document.getElementById('dateDetailsModal');
+            const title = document.getElementById('dateDetailsTitle');
+            const content = document.getElementById('dateDetailsContent');
+
+            const dateObj = new Date(date);
+            const dateStr = dateObj.toLocaleDateString(currentLang === 'en' ? 'en-US' : currentLang === 'ta' ? 'ta-IN' : 'si-LK', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            title.textContent = `${dateStr} - ${translations[currentLang].participants}`;
+
+            const dateParticipants = getParticipantsForDate(date);
+
+            if (dateParticipants.length === 0) {
+                content.innerHTML = `<p style="text-align: center; color: #999; padding: 20px;">No participants for this date</p>`;
+            } else {
+                content.innerHTML = dateParticipants.map(p => `
+                    <div class="date-participant-item">
+                        <strong>${p.regNumber}</strong> - ${p.name}<br>
+                        <small>${translations[currentLang].age}: ${p.age} ${translations[currentLang].years} | NIC: ${p.nic} | 📱 ${p.phone}</small>
+                    </div>
+                `).join('');
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeDateDetails() {
+            document.getElementById('dateDetailsModal').classList.remove('active');
+        }
+
+        // Update Participants List (Admin View)
+        function updateParticipantsList() {
+            const list = document.getElementById('participantsList');
+            const totalReg = document.getElementById('totalRegistrations');
+            const fullyBookedNights = document.getElementById('fullyBookedNights');
+            const adminCalendar = document.getElementById('adminCalendar');
+
+            totalReg.textContent = participants.length;
+
+            let fullNightsCount = 0;
+            RAMADAN_DATES.forEach(date => {
+                if (getBookingCount(date) >= MAX_SLOTS) {
+                    fullNightsCount++;
+                }
+            });
+            fullyBookedNights.textContent = fullNightsCount;
+
+            adminCalendar.innerHTML = '';
+            RAMADAN_DATES.forEach(date => {
+                const count = getBookingCount(date);
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day admin-view';
+                if (count >= MAX_SLOTS) dayDiv.classList.add('full');
+
+                const dateObj = new Date(date);
+                const dayNum = dateObj.getDate();
+
+                dayDiv.innerHTML = `
+                    <div class="date-label">Mar ${dayNum}</div>
+                    <div class="slots-left">${count}/${MAX_SLOTS}</div>
+                `;
+                dayDiv.onclick = () => showDateDetails(date);
+                adminCalendar.appendChild(dayDiv);
+            });
+
+            list.innerHTML = '';
+
+            if (participants.length === 0) {
+                list.innerHTML = `<p style="text-align: center; color: #999; padding: 20px;">${translations[currentLang].participants} - None</p>`;
+                return;
+            }
+
+            participants.sort((a, b) => a.regNumber.localeCompare(b.regNumber));
+
+            participants.forEach((p, index) => {
+                const start = new Date(p.checkIn).toLocaleDateString();
+                const end = new Date(p.checkOut).toLocaleDateString();
+                const nights = Math.ceil((new Date(p.checkOut) - new Date(p.checkIn)) / (1000 * 60 * 60 * 24));
+
+                const card = document.createElement('div');
+                card.className = 'participant-card';
+                card.innerHTML = `
+                    <div class="participant-info">
+                        <div class="reg-number">${p.regNumber}</div>
+                        <h4>${p.name}</h4>
+                        <p>🎂 ${p.dob} (${p.age} ${translations[currentLang].years}) | 🆔 ${p.nic}</p>
+                        <p>📱 ${p.phone} | 📅 ${start} → ${end} (${nights}n)</p>
+                    </div>
+                    <button class="delete-btn" onclick="deleteParticipant(${p.id})">Remove</button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // Delete Participant
+        function deleteParticipant(id) {
+            if (confirm(currentLang === 'en' ? 'Remove this registration?' :
+                currentLang === 'ta' ? 'இந்த பதிவை அகற்றவா?' :
+                    'මෙම ලියාපදිංචිය ඉවත් කරන්නද?')) {
+                participants = participants.filter(p => p.id !== id);
+                localStorage.setItem('ithikaf_participants', JSON.stringify(participants));
+                updateParticipantsList();
+                generateCalendar();
+            }
+        }
+
+        // Clear All Data
+        function clearAllData() {
+            if (confirm(currentLang === 'en' ? 'Clear all registrations? This cannot be undone.' :
+                currentLang === 'ta' ? 'அனைத்து பதிவுகளையும் அகற்றவா? இதை மீண்டும் மீட்ட முடியாது.' :
+                    'සියලුම ලියාපදිංචි මකන්නද? මෙය ආපසු හැරවිය නොහැක.')) {
+                participants = [];
+                localStorage.removeItem('ithikaf_participants');
+                updateParticipantsList();
+                generateCalendar();
+            }
+        }
+    </script>
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpShqq9gNz7RPmOHkv4DB3jZwL5ekiwh0",
+            authDomain: "ithikaf-system.firebaseapp.com",
+            projectId: "ithikaf-system",
+            storageBucket: "ithikaf-system.firebasestorage.app",
+            messagingSenderId: "473696166582",
+            appId: "1:473696166582:web:e91d6a3c43bf9b8336fc17"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // make global so your main script can call it
+        window.saveParticipantToFirebase = async function (participant) {
+            try {
+                await addDoc(collection(db, "participants"), participant);
+                console.log("Saved to Firebase");
+            } catch (error) {
+                console.error("Firebase error:", error);
+            }
+        }
+
+    </script>
+</body>
+
+</html>
