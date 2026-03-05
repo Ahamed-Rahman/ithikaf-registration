@@ -2097,7 +2097,15 @@
     <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            getDocs,
+            deleteDoc,
+            doc
+        } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
         const firebaseConfig = {
             apiKey: "AIzaSyCpShqq9gNz7RPmOHkv4DB3jZwL5ekiwh0",
             authDomain: "ithikaf-system.firebaseapp.com",
@@ -2110,6 +2118,11 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        window.db = db;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
         // make global so your main script can call it
         window.saveParticipantToFirebase = async function (participant) {
             try {
