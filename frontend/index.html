@@ -1083,11 +1083,12 @@
             <!-- Date Selection Summary -->
             <div class="date-range-display" id="dateSummary" style="display: none;">
                 <div class="day-count" id="dayCount">0</div>
-                <div class="day-label" data-en="Days Selected" data-ta="தேர்ந்தெடுக்கப்பட்ட நாட்கள்"
-                    data-si="තෝරාගත් දින">Days Selected</div>
+                <div class="day-label">Days Selected</div>
                 <div class="date-text" id="dateRangeText"></div>
-            </div>
 
+                <div class="date-text" id="summaryName"></div>
+                <div class="date-text" id="summaryAge"></div>
+            </div>
             <!-- Registration Form -->
             <form id="ithikafForm" onsubmit="handleRegister(event)">
                 <input type="hidden" id="checkInDate" required>
@@ -1455,12 +1456,19 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
+
             loadParticipantsFromFirebase();
             generateCalendar();
             updateParticipantsList();
+
+            // NEW: update summary when name or DOB changes
+            document.getElementById("fullName").addEventListener("input", updateDateSummary);
+            document.getElementById("dob").addEventListener("change", updateDateSummary);
+
             if (sessionStorage.getItem('adminLoggedIn') === 'true') {
                 showAdminPanel();
             }
+
         });
 
         // Generate Calendar
@@ -1664,11 +1672,15 @@
 
         // Update Date Summary Display
         function updateDateSummary() {
+
             const summary = document.getElementById('dateSummary');
             const dayCount = document.getElementById('dayCount');
             const dateText = document.getElementById('dateRangeText');
             const checkInInput = document.getElementById('checkInDate');
             const checkOutInput = document.getElementById('checkOutDate');
+
+            const summaryName = document.getElementById('summaryName');
+            const summaryAge = document.getElementById('summaryAge');
 
             if (!selectedDates.checkIn) {
                 summary.style.display = 'none';
@@ -1693,10 +1705,26 @@
             summary.style.display = 'block';
             dayCount.textContent = diffDays;
 
-            const startStr = start.toLocaleDateString(currentLang === 'en' ? 'en-US' : currentLang === 'ta' ? 'ta-IN' : 'si-LK', { month: 'short', day: 'numeric' });
-            const endStr = end.toLocaleDateString(currentLang === 'en' ? 'en-US' : currentLang === 'ta' ? 'ta-IN' : 'si-LK', { month: 'short', day: 'numeric' });
+            const startStr = start.toLocaleDateString(
+                currentLang === 'en' ? 'en-US' :
+                    currentLang === 'ta' ? 'ta-IN' : 'si-LK',
+                { month: 'short', day: 'numeric' }
+            );
+
+            const endStr = end.toLocaleDateString(
+                currentLang === 'en' ? 'en-US' :
+                    currentLang === 'ta' ? 'ta-IN' : 'si-LK',
+                { month: 'short', day: 'numeric' }
+            );
 
             dateText.textContent = `${startStr} - ${endStr} (${diffDays} ${translations[currentLang].nights})`;
+
+            // ⭐ NEW PART (Name + Age)
+            const name = document.getElementById("fullName").value;
+            const age = calculateAge();
+
+            summaryName.textContent = name ? "Name: " + name : "";
+            summaryAge.textContent = age ? "Age: " + age + " years" : "";
         }
 
         // Language Switcher
@@ -2028,14 +2056,40 @@
         }
 
         // Clear All Data
-        function clearAllData() {
-            if (confirm(currentLang === 'en' ? 'Clear all registrations? This cannot be undone.' :
-                currentLang === 'ta' ? 'அனைத்து பதிவுகளையும் அகற்றவா? இதை மீண்டும் மீட்ட முடியாது.' :
-                    'සියලුම ලියාපදිංචි මකන්නද? මෙය ආපසු හැරවිය නොහැක.')) {
-                participants = [];
-                localStorage.removeItem('ithikaf_participants');
-                updateParticipantsList();
-                generateCalendar();
+        async function clearAllData() {
+
+            if (confirm(
+                currentLang === 'en' ? 'Clear all registrations? This cannot be undone.' :
+                    currentLang === 'ta' ? 'அனைத்து பதிவுகளையும் அகற்றவா? இதை மீண்டும் மீட்ட முடியாது.' :
+                        'සියලුම ලියාපදිංචි මකන්නද? මෙය ආපසු හැරවිය නොහැක.'
+            )) {
+
+                try {
+
+                    const querySnapshot = await getDocs(collection(db, "participants"));
+
+                    const deletePromises = [];
+
+                    querySnapshot.forEach((docItem) => {
+                        deletePromises.push(deleteDoc(doc(db, "participants", docItem.id)));
+                    });
+
+                    await Promise.all(deletePromises);
+
+                    participants = [];
+
+                    updateParticipantsList();
+                    generateCalendar();
+
+                    alert("All registrations cleared successfully.");
+
+                } catch (error) {
+
+                    console.error("Error clearing data:", error);
+                    alert("Error clearing data.");
+
+                }
+
             }
         }
     </script>
@@ -2043,7 +2097,7 @@
     <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
         const firebaseConfig = {
             apiKey: "AIzaSyCpShqq9gNz7RPmOHkv4DB3jZwL5ekiwh0",
             authDomain: "ithikaf-system.firebaseapp.com",
