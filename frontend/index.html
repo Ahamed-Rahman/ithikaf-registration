@@ -128,8 +128,8 @@
         }
 
         .logo {
-            width: 110px;
-            height: 110px;
+            width: 100px;
+            height: 100px;
             object-fit: contain;
             background: white;
             padding: 10px;
@@ -147,6 +147,21 @@
             padding: 4px 12px;
             border-radius: 20px;
             letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+
+            .logo {
+                width: 65px;
+                height: 65px;
+                padding: 6px;
+            }
+
+            .project-by {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+
         }
 
         .subtitle {
