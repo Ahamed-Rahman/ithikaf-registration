@@ -2126,12 +2126,18 @@
 
                 try {
 
-                    const querySnapshot = await getDocs(collection(db, "participants"));
+                    const querySnapshot = await window.getDocs(
+                        window.collection(window.db, "participants")
+                    );
 
                     const deletePromises = [];
 
                     querySnapshot.forEach((docItem) => {
-                        deletePromises.push(deleteDoc(doc(db, "participants", docItem.id)));
+                        deletePromises.push(
+                            window.deleteDoc(
+                                window.doc(window.db, "participants", docItem.id)
+                            )
+                        );
                     });
 
                     await Promise.all(deletePromises);
