@@ -1029,9 +1029,9 @@
 
         <!-- Language Switcher -->
         <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLanguage('en')">English</button>
-            <button class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
-            <button class="lang-btn" onclick="setLanguage('si')">සිංහල</button>
+            <button class="lang-btn active" onclick="setLanguage(event,'en')">English</button>
+            <button class="lang-btn" onclick="setLanguage(event,'ta')">தமிழ்</button>
+            <button class="lang-btn" onclick="setLanguage(event,'si')">සිංහල</button>
         </div>
 
         <!-- Main Navigation Tabs -->
@@ -1258,6 +1258,60 @@
                 data-si="සියලුම දත්ත මකන්න (ප්‍රදර්ශනය පමණි)">Clear All Data (Demo Only)</button>
         </div>
     </div>
+    <!-- FIREBASE SCRIPT FIRST -->
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            getDocs,
+            deleteDoc,
+            doc
+        } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpShqq9gNz7RPmOHkv4DB3jZwL5ekiwh0",
+            authDomain: "ithikaf-system.firebaseapp.com",
+            projectId: "ithikaf-system",
+            storageBucket: "ithikaf-system.firebasestorage.app",
+            messagingSenderId: "473696166582",
+            appId: "1:473696166582:web:e91d6a3c43bf9b8336fc17"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.collection = collection;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+
+        window.saveParticipantToFirebase = async function (participant) {
+            await addDoc(collection(db, "participants"), participant);
+        }
+
+        window.loadParticipantsFromFirebase = async function () {
+
+            const querySnapshot = await getDocs(collection(db, "participants"));
+
+            participants = [];
+
+            querySnapshot.forEach((docItem) => {
+                participants.push({
+                    ...docItem.data(),
+                    firebaseId: docItem.id
+                });
+            });
+
+            updateParticipantsList();
+            generateCalendar();
+        }
+
+    </script>
 
     <script>
 
@@ -1728,12 +1782,13 @@
         }
 
         // Language Switcher
-        function setLanguage(lang) {
+        function setLanguage(event, lang) {
             currentLang = lang;
 
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
+
             event.target.classList.add('active');
 
             document.querySelectorAll('[data-en]').forEach(el => {
@@ -1885,10 +1940,8 @@
                 registeredAt: new Date().toLocaleString()
             };
 
-            participants.push(participant);
-
-            // SAVE TO FIREBASE
             await saveParticipantToFirebase(participant);
+            await loadParticipantsFromFirebase();
 
             // Prepare SMS message
             const startStr = new Date(selectedDates.checkIn).toLocaleDateString();
@@ -2044,14 +2097,21 @@
         }
 
         // Delete Participant
-        function deleteParticipant(id) {
-            if (confirm(currentLang === 'en' ? 'Remove this registration?' :
-                currentLang === 'ta' ? 'இந்த பதிவை அகற்றவா?' :
-                    'මෙම ලියාපදිංචිය ඉවත් කරන්නද?')) {
-                participants = participants.filter(p => p.id !== id);
-                localStorage.setItem('ithikaf_participants', JSON.stringify(participants));
-                updateParticipantsList();
-                generateCalendar();
+        async function deleteParticipant(id) {
+
+            if (confirm(
+                currentLang === 'en' ? 'Remove this registration?' :
+                    currentLang === 'ta' ? 'இந்த பதிவை அகற்றவா?' :
+                        'මෙම ලියාපදිංචිය ඉවත් කරන්නද?'
+            )) {
+
+                const participant = participants.find(p => p.id === id);
+
+                if (participant && participant.firebaseId) {
+                    await deleteDoc(doc(db, "participants", participant.firebaseId));
+                }
+
+                await loadParticipantsFromFirebase();
             }
         }
 
@@ -2094,69 +2154,6 @@
         }
     </script>
 
-    <script type="module">
-
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-
-        import {
-            getFirestore,
-            collection,
-            addDoc,
-            getDocs,
-            deleteDoc,
-            doc
-        } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-        const firebaseConfig = {
-            apiKey: "AIzaSyCpShqq9gNz7RPmOHkv4DB3jZwL5ekiwh0",
-            authDomain: "ithikaf-system.firebaseapp.com",
-            projectId: "ithikaf-system",
-            storageBucket: "ithikaf-system.firebasestorage.app",
-            messagingSenderId: "473696166582",
-            appId: "1:473696166582:web:e91d6a3c43bf9b8336fc17"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        window.db = db;
-        window.collection = collection;
-        window.getDocs = getDocs;
-        window.deleteDoc = deleteDoc;
-        window.doc = doc;
-        // make global so your main script can call it
-        window.saveParticipantToFirebase = async function (participant) {
-            try {
-                await addDoc(collection(db, "participants"), participant);
-                console.log("Saved to Firebase");
-            } catch (error) {
-                console.error("Firebase error:", error);
-            }
-        }
-
-        window.loadParticipantsFromFirebase = async function () {
-
-            try {
-
-                const querySnapshot = await getDocs(collection(db, "participants"));
-
-                participants = [];
-
-                querySnapshot.forEach((doc) => {
-                    participants.push(doc.data());
-                });
-
-                updateParticipantsList();
-                generateCalendar();
-
-            } catch (error) {
-
-                console.error("Error loading participants:", error);
-
-            }
-
-        }
-
-    </script>
 </body>
 
 </html>
