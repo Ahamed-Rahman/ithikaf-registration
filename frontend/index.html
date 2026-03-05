@@ -79,7 +79,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 20px;
         }
 
         .header-text {
@@ -88,25 +88,48 @@
         }
 
         .logo {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             object-fit: contain;
+            background: white;
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .location {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-top: 2px;
         }
 
         .project-by {
+            margin-top: 10px;
             font-size: 13px;
-            margin-top: 5px;
-            opacity: 0.9;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
         }
 
-        @keyframes shine {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+        /* Mobile optimization */
+
+        @media (max-width:600px) {
+
+            .logo {
+                width: 65px;
+                height: 65px;
             }
 
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+            .location {
+                font-size: 16px;
             }
+
+            .header-container {
+                gap: 10px;
+            }
+
         }
 
         .mosque-name {
@@ -962,26 +985,43 @@
 
             <div class="header-container">
 
-                <img src="ymma-logo.jpeg" class="logo left-logo">
+                <img src="ymma-logo.jpeg" class="logo left-logo" alt="YMMA Nawalapitiya">
 
                 <div class="header-text">
 
                     <div class="mosque-name" data-en="Town Jumma Masjid" data-ta="நகர ஜும்மா பள்ளிவாசல்"
-                        data-si="නගර ජුම්මා මස්ජිදය">Town Jumma Masjid - Nawalapitiya</div>
+                        data-si="නගර ජුම්මා මස්ජිදය">
 
-                    <div class="title" data-en="Ithikaf Registration" data-ta="இஃதிகாஃப் பதிவு"
-                        data-si="ඉතිකාෆ් ලියාපදිංචිය">Iʿtikāf Registration</div>
+                        Town Jumma Masjid
 
-                    <div class="subtitle" data-en=" Ramadan 2026" data-ta="நாவலப்பிட்டிய | ரமலான் 2026"
-                        data-si=" රමලාන් 2026">
-                        Ramadan 2026
                     </div>
 
-                    <div class="project-by">Project by YMMA NAWALAPITIYA</div>
+                    <div class="location" data-en="Nawalapitiya" data-ta="நாவலப்பிட்டிய" data-si="නාවලපිටිය">
+
+                        Nawalapitiya
+
+                    </div>
+
+                    <div class="title" data-en="Ithikaf Registration" data-ta="இஃதிகாஃப் பதிவு"
+                        data-si="ඉතිකාෆ් ලියාපදිංචිය">
+
+                        Iʿtikāf Registration
+
+                    </div>
+
+                    <div class="subtitle" data-en="Ramadan 2026" data-ta="ரமலான் 2026" data-si="රමලාන් 2026">
+
+                        Ramadan 2026
+
+                    </div>
+
+                    <div class="project-by">
+                        Project by YMMA NAWALAPITIYA
+                    </div>
 
                 </div>
 
-                <img src="masjid-logo.jpeg" class="logo right-logo">
+                <img src="masjid-logo.jpeg" class="logo right-logo" alt="Town Jumma Masjid">
 
             </div>
 
