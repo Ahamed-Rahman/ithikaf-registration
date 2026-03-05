@@ -1149,7 +1149,7 @@
         ];
 
         // State
-        let participants = JSON.parse(localStorage.getItem('ithikaf_participants')) || [];
+        let participants = [];
         let currentLang = 'en';
         let selectedDates = { checkIn: null, checkOut: null };
 
@@ -1334,6 +1334,7 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function () {
+            loadParticipantsFromFirebase();
             generateCalendar();
             updateParticipantsList();
             if (sessionStorage.getItem('adminLoggedIn') === 'true') {
@@ -1736,7 +1737,6 @@
             };
 
             participants.push(participant);
-            localStorage.setItem('ithikaf_participants', JSON.stringify(participants));
 
             // SAVE TO FIREBASE
             await saveParticipantToFirebase(participant);
@@ -1922,8 +1922,7 @@
     <script type="module">
 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
-
+        import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
         const firebaseConfig = {
             apiKey: "AIzaSyCpShqq9gNz7RPmOHkv4DB3jZwL5ekiwh0",
             authDomain: "ithikaf-system.firebaseapp.com",
@@ -1944,6 +1943,29 @@
             } catch (error) {
                 console.error("Firebase error:", error);
             }
+        }
+
+        window.loadParticipantsFromFirebase = async function () {
+
+            try {
+
+                const querySnapshot = await getDocs(collection(db, "participants"));
+
+                participants = [];
+
+                querySnapshot.forEach((doc) => {
+                    participants.push(doc.data());
+                });
+
+                updateParticipantsList();
+                generateCalendar();
+
+            } catch (error) {
+
+                console.error("Error loading participants:", error);
+
+            }
+
         }
 
     </script>
