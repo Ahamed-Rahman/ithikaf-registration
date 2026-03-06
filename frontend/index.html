@@ -1962,7 +1962,30 @@
             const smsMessage = `Assalamu Alaikum ${name}! Your Ithikaf registration (${regNumber}) is confirmed from ${startStr} to ${endStr}. Please arrive before Maghrib on ${startStr}. Town Jumma Masjid Nawalapitiya. Jazakallah!`;
 
             // Send SMS via text.lk
-            const smsResult = await sendSMS(phone, smsMessage);
+            sendSMS(phone, smsMessage).then((smsResult) => {
+
+                const smsNotif = document.getElementById('smsNotification');
+                const smsIcon = document.getElementById('smsIcon');
+                const smsTitle = document.getElementById('smsTitle');
+                const smsDetails = document.getElementById('smsDetails');
+
+                if (smsResult.success) {
+                    smsNotif.classList.remove('error');
+                    smsIcon.textContent = '📱';
+                    smsTitle.textContent = translations[currentLang].smsSent;
+                    smsDetails.textContent = `${translations[currentLang].smsTo}: ${phone}`;
+                    smsTitle.style.color = 'var(--info)';
+                } else {
+                    smsNotif.classList.add('error');
+                    smsIcon.textContent = '⚠️';
+                    smsTitle.textContent = translations[currentLang].smsFailed;
+                    smsDetails.textContent = `Error: ${smsResult.error || 'Network error'}`;
+                    smsTitle.style.color = 'var(--danger)';
+                }
+
+                smsNotif.classList.add('show');
+
+            });
 
             // Reset button
             submitBtn.disabled = false;
