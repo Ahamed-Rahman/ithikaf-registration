@@ -2182,42 +2182,61 @@
 
             let y = 10;
 
-            // ===== HEADER BACKGROUND =====
-            doc.setFillColor(30, 86, 49); // green
-            doc.rect(0, 0, 210, 35, "F");
+            // ===== GREEN HEADER BACKGROUND =====
+            doc.setFillColor(30, 86, 49);
+            doc.rect(0, 0, 210, 40, "F");
+
+            // ===== LOGOS =====
+            const leftLogo = new Image();
+            const rightLogo = new Image();
+
+            leftLogo.src = "ymma-logo.jpeg";
+            rightLogo.src = "masjid-logo.jpeg";
+
+            // left logo
+            doc.addImage(leftLogo, "JPEG", 10, 5, 20, 20);
+
+            // right logo
+            doc.addImage(rightLogo, "JPEG", 180, 5, 20, 20);
 
             // ===== HEADER TEXT =====
             doc.setTextColor(255, 255, 255);
+
             doc.setFontSize(18);
             doc.text("Town Jumma Masjid", 105, 12, { align: "center" });
 
             doc.setFontSize(12);
             doc.text("Nawalapitiya", 105, 18, { align: "center" });
 
+            doc.setTextColor(212, 175, 55);
             doc.setFontSize(16);
-            doc.text("Iʿtikāf Registration", 105, 26, { align: "center" });
+            doc.text("Iʿtikāf Registration", 105, 25, { align: "center" });
 
+            doc.setTextColor(255, 255, 255);
             doc.setFontSize(11);
-            doc.text("Ramadan 2026", 105, 32, { align: "center" });
+            doc.text("Ramadan 2026", 105, 31, { align: "center" });
+
+            doc.setFontSize(10);
+            doc.text("Project by YMMA NAWALAPITIYA", 105, 36, { align: "center" });
 
             // ===== TABLE HEADER =====
-            y = 50;
+            y = 55;
 
-            doc.setFillColor(212, 175, 55); // gold
+            doc.setFillColor(212, 175, 55);
             doc.rect(10, y - 6, 190, 8, "F");
 
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(10);
 
             doc.text("No", 12, y);
-            doc.text("Name", 22, y);
-            doc.text("NIC", 65, y);
+            doc.text("Name", 25, y);
+            doc.text("NIC", 70, y);
             doc.text("Phone", 105, y);
             doc.text("Check-In", 135, y);
             doc.text("Check-Out", 160, y);
             doc.text("Reg#", 185, y);
 
-            y += 8;
+            y += 10;
 
             // ===== TABLE DATA =====
             participants.forEach((p, index) => {
@@ -2226,8 +2245,8 @@
                 const end = new Date(p.checkOut).toLocaleDateString();
 
                 doc.text(String(index + 1), 12, y);
-                doc.text(p.name, 22, y);
-                doc.text(p.nic, 65, y);
+                doc.text(p.name, 25, y);
+                doc.text(p.nic, 70, y);
                 doc.text(p.phone, 105, y);
                 doc.text(start, 135, y);
                 doc.text(end, 160, y);
