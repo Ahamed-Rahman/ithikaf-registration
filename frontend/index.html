@@ -981,7 +981,7 @@
 
 <body>
     <div class="container">
-        <header>
+        <header id="pdfHeader">
 
             <div class="header-container">
 
@@ -1319,6 +1319,7 @@
     </script>
 
     <script src="Poppins-Bold.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
 
@@ -2183,106 +2184,68 @@
         }
 
 
-        function downloadPDF() {
+        async function downloadPDF() {
 
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
 
-            // Use custom font
+            const header = document.getElementById("pdfHeader");
+
+            const canvas = await html2canvas(header, { scale: 2 });
+
+            const imgData = canvas.toDataURL("image/png");
+
+            const doc = new jsPDF("p", "mm", "a4");
+
+            // ===== ADD WEBSITE HEADER IMAGE =====
+            doc.addImage(imgData, "PNG", 0, 0, 210, 50);
+
+            let y = 65;
+
+            // ===== TABLE HEADER =====
+            doc.setFillColor(212, 175, 55);
+            doc.rect(10, y - 6, 190, 8, "F");
+
+            doc.setTextColor(0, 0, 0);
             doc.setFont("Poppins", "bold");
+            doc.setFontSize(10);
 
-            let y = 10;
+            doc.text("No", 12, y);
+            doc.text("Name", 25, y);
+            doc.text("NIC", 75, y);
+            doc.text("Phone", 115, y);
+            doc.text("Check-In", 145, y);
+            doc.text("Check-Out", 165, y);
+            doc.text("Reg#", 185, y);
 
-            const leftLogo = new Image();
-            const rightLogo = new Image();
+            y += 10;
 
-            leftLogo.src = "ymma-logo.jpeg";
-            rightLogo.src = "masjid-logo.jpeg";
+            // ===== TABLE DATA =====
+            participants.forEach((p, index) => {
 
-            leftLogo.onload = function () {
+                const start = new Date(p.checkIn).toLocaleDateString();
+                const end = new Date(p.checkOut).toLocaleDateString();
 
-                rightLogo.onload = function () {
+                doc.setFont("Poppins", "normal");
+                doc.setFontSize(10);
 
-                    // ===== GREEN HEADER BACKGROUND =====
-                    doc.setFillColor(30, 86, 49);
-                    doc.rect(0, 0, 210, 40, "F");
+                doc.text(String(index + 1), 12, y);
+                doc.text(p.name, 25, y);
+                doc.text(p.nic, 75, y);
+                doc.text(p.phone, 115, y);
+                doc.text(start, 145, y);
+                doc.text(end, 165, y);
+                doc.text(p.regNumber, 185, y);
 
-                    // ===== LOGOS =====
-                    doc.addImage(leftLogo, "JPEG", 10, 8, 20, 20);
-                    doc.addImage(rightLogo, "JPEG", 180, 8, 20, 20);
+                y += 8;
 
-                    // ===== HEADER TEXT =====
-                    doc.setTextColor(255, 255, 255);
-
-                    doc.setFont("Poppins", "bold");
-                    doc.setFontSize(20);
-                    doc.text("Town Jumma Masjid", 105, 12, { align: "center" });
-
-                    doc.setFontSize(12);
-                    doc.text("Nawalapitiya", 105, 18, { align: "center" });
-
-                    doc.setTextColor(212, 175, 55);
-                    doc.setFontSize(22);
-                    doc.text("Iʿtikāf Registration", 105, 26, { align: "center" });
-
-                    doc.setTextColor(255, 255, 255);
-                    doc.setFontSize(11);
-                    doc.text("Ramadan 2026", 105, 32, { align: "center" });
-
-                    doc.setFontSize(10);
-                    doc.text("Project by YMMA NAWALAPITIYA", 105, 37, { align: "center" });
-
-                    // ===== TABLE HEADER =====
-                    y = 55;
-
-                    doc.setFillColor(212, 175, 55);
-                    doc.rect(10, y - 6, 190, 8, "F");
-
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFont("Poppins", "bold");
-                    doc.setFontSize(10);
-
-                    doc.text("Name", 25, y);
-                    doc.text("NIC", 75, y);
-                    doc.text("Phone", 115, y);
-                    doc.text("Check-In", 145, y);
-                    doc.text("Check-Out", 170, y);
-                    doc.text("Reg#", 190, y);
-
-                    y += 10;
-
-                    // ===== TABLE DATA =====
-                    participants.forEach((p, index) => {
-
-                        const start = new Date(p.checkIn).toLocaleDateString();
-                        const end = new Date(p.checkOut).toLocaleDateString();
-
-                        doc.setFont("Poppins", "normal");
-                        doc.setFontSize(10);
-
-                        doc.text(String(index + 1), 12, y);
-                        doc.text(p.name, 25, y);
-                        doc.text(p.nic, 70, y);
-                        doc.text(p.phone, 105, y);
-                        doc.text(start, 135, y);
-                        doc.text(end, 160, y);
-                        doc.text(p.regNumber, 185, y);
-
-                        y += 8;
-
-                        if (y > 280) {
-                            doc.addPage();
-                            y = 20;
-                        }
-
-                    });
-
-                    doc.save("ithikaf_registrations.pdf");
-
+                if (y > 280) {
+                    doc.addPage();
+                    y = 20;
                 }
 
-            }
+            });
 
+            doc.save("ithikaf_registrations.pdf");
         }
     </script>
 
