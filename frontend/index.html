@@ -2209,14 +2209,23 @@
             doc.setFont("Poppins", "bold");
             doc.setFontSize(10);
 
-            doc.text("No", 12, y);
-            doc.text("Name", 22, y);
-            doc.text("NIC", 65, y);
-            doc.text("Phone", 105, y);
-            doc.text("Check-In", 135, y);
-            doc.text("Check-Out", 160, y);
-            doc.text("Reg#", 185, y);
+            const col = {
+                no: 12,
+                name: 25,
+                nic: 70,
+                phone: 110,
+                checkin: 140,
+                checkout: 160,
+                reg: 182
+            };
 
+            doc.text("No", col.no, y);
+            doc.text("Name", col.name, y);
+            doc.text("NIC", col.nic, y);
+            doc.text("Phone", col.phone, y);
+            doc.text("Check-In", col.checkin, y);
+            doc.text("Check-Out", col.checkout, y);
+            doc.text("Reg#", col.reg, y);
             y += 10;
 
             // ===== TABLE DATA =====
@@ -2228,14 +2237,13 @@
                 doc.setFont("Poppins", "normal");
                 doc.setFontSize(10);
 
-                doc.text(String(index + 1), 12, y);
-                doc.text(p.name, 22, y);
-                doc.text(p.nic, 65, y);
-                doc.text(p.phone, 105, y);
-                doc.text(start, 135, y);
-                doc.text(end, 160, y);
-                doc.text(p.regNumber, 185, y);
-
+                doc.text(String(index + 1), col.no, y);
+                doc.text(p.name, col.name, y);
+                doc.text(p.nic, col.nic, y);
+                doc.text(p.phone, col.phone, y);
+                doc.text(start, col.checkin, y);
+                doc.text(end, col.checkout, y);
+                doc.text(p.regNumber, col.reg, y);
                 y += 8;
 
                 if (y > 280) {
