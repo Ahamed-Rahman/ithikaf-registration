@@ -2197,9 +2197,12 @@
             const doc = new jsPDF("p", "mm", "a4");
 
             // ===== ADD WEBSITE HEADER IMAGE =====
-            doc.addImage(imgData, "PNG", 0, 0, 210, 50);
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-            let y = 65;
+            doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+            let y = imgHeight + 15;
 
             // ===== TABLE HEADER =====
             doc.setFillColor(212, 175, 55);
