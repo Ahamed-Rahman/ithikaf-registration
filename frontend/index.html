@@ -2211,12 +2211,12 @@
 
             const col = {
                 no: 12,
-                name: 25,
+                name: 22,
                 nic: 70,
                 phone: 110,
-                checkin: 140,
-                checkout: 160,
-                reg: 182
+                checkin: 138,
+                checkout: 158,
+                reg: 188
             };
 
             doc.text("No", col.no, y);
@@ -2225,7 +2225,7 @@
             doc.text("Phone", col.phone, y);
             doc.text("Check-In", col.checkin, y);
             doc.text("Check-Out", col.checkout, y);
-            doc.text("Reg#", col.reg, y);
+            doc.text("Reg#", col.reg, y, { align: "right" });
             y += 10;
 
             // ===== TABLE DATA =====
@@ -2236,14 +2236,13 @@
 
                 doc.setFont("Poppins", "normal");
                 doc.setFontSize(10);
-
                 doc.text(String(index + 1), col.no, y);
                 doc.text(p.name, col.name, y);
                 doc.text(p.nic, col.nic, y);
                 doc.text(p.phone, col.phone, y);
                 doc.text(start, col.checkin, y);
                 doc.text(end, col.checkout, y);
-                doc.text(p.regNumber, col.reg, y);
+                doc.text(p.regNumber, col.reg, y, { align: "right" });
                 y += 8;
 
                 if (y > 280) {
