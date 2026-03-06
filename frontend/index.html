@@ -1249,6 +1249,9 @@
             <h3 style="color: var(--primary); margin-bottom: 15px; font-size: clamp(1.1rem, 3.5vw, 1.3rem);"
                 data-en="All Registered Participants" data-ta="அனைத்து பதிவு செய்த பங்கேற்பாளர்கள்"
                 data-si="සියලුම ලියාපදිංචි වූ පුද්ගලයන්">All Registered Participants</h3>
+            <button class="btn" onclick="downloadPDF()" style="margin-bottom:15px;">
+                📄 Download Registrations PDF
+            </button>
             <div id="participantsList" class="registered-list">
                 <!-- Participants will be listed here -->
             </div>
@@ -1258,6 +1261,8 @@
                 data-si="සියලුම දත්ත මකන්න (ප්‍රදර්ශනය පමණි)">Reset All Registrations</button>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <!-- FIREBASE SCRIPT FIRST -->
     <script type="module">
 
@@ -2090,14 +2095,14 @@
                         <p>🎂 ${p.dob} (${p.age} ${translations[currentLang].years}) | 🆔 ${p.nic}</p>
                         <p>📱 ${p.phone} | 📅 ${start} → ${end} (${nights}n)</p>
                     </div>
-                    <button class="delete-btn" onclick="deleteParticipant(${p.id})">Remove</button>
+                   <button class="delete-btn" onclick="deleteParticipant('${p.firebaseId}')">Remove</button>
                 `;
                 list.appendChild(card);
             });
         }
 
         // Delete Participant
-        async function deleteParticipant(id) {
+        async function deleteParticipant(firebaseId) {
 
             if (confirm(
                 currentLang === 'en' ? 'Remove this registration?' :
@@ -2105,16 +2110,27 @@
                         'මෙම ලියාපදිංචිය ඉවත් කරන්නද?'
             )) {
 
-                const participant = participants.find(p => p.id === id);
+                try {
 
-                if (participant && participant.firebaseId) {
-                    await deleteDoc(doc(db, "participants", participant.firebaseId));
+                    await deleteDoc(doc(db, "participants", firebaseId));
+
+                    await loadParticipantsFromFirebase();
+
+                } catch (error) {
+
+                    console.error("Error deleting participant:", error);
+
+                    alert(
+                        currentLang === 'en' ? 'Error removing registration.' :
+                            currentLang === 'ta' ? 'பதிவை அகற்றும் போது பிழை ஏற்பட்டது.' :
+                                'ලියාපදිංචිය ඉවත් කිරීමේදී දෝෂයක් ඇතිවිය.'
+                    );
+
                 }
 
-                await loadParticipantsFromFirebase();
             }
-        }
 
+        }
         // Clear All Data
         async function clearAllData() {
 
@@ -2158,6 +2174,41 @@
 
             }
         }
+
+        function downloadPDF() {
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text("Ithikaf Registrations", 10, 15);
+
+            doc.setFontSize(11);
+
+            let y = 30;
+
+            participants.forEach((p, index) => {
+
+                const start = new Date(p.checkIn).toLocaleDateString();
+                const end = new Date(p.checkOut).toLocaleDateString();
+
+                const line =
+                    `${index + 1}. ${p.name} | NIC: ${p.nic} | Phone: ${p.phone} | ${start} → ${end} | ${p.regNumber}`;
+
+                doc.text(line, 10, y);
+
+                y += 10;
+
+                if (y > 280) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+            });
+
+            doc.save("ithikaf_registrations.pdf");
+        }
+
     </script>
 
 </body>
