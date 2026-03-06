@@ -2190,13 +2190,24 @@
 
             const header = document.getElementById("pdfHeader");
 
-            const canvas = await html2canvas(header, { scale: 2 });
+            // ===== FORCE DESKTOP WIDTH FOR PDF =====
+            const originalWidth = header.style.width;
+            header.style.width = "1000px";
+
+            const canvas = await html2canvas(header, {
+                scale: 3,          // higher quality
+                useCORS: true,
+                windowWidth: 1000
+            });
+
+            // Restore original width
+            header.style.width = originalWidth;
 
             const imgData = canvas.toDataURL("image/png");
 
             const doc = new jsPDF("p", "mm", "a4");
 
-            // ===== ADD WEBSITE HEADER IMAGE =====
+            // ===== ADD HEADER IMAGE =====
             const imgWidth = 210;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
@@ -2229,6 +2240,7 @@
             doc.text("Check-In", col.checkin, y);
             doc.text("Check-Out", col.checkout, y);
             doc.text("Reg#", col.reg, y);
+
             y += 10;
 
             // ===== TABLE DATA =====
@@ -2247,11 +2259,28 @@
                 doc.text(start, col.checkin, y);
                 doc.text(end, col.checkout, y);
                 doc.text(p.regNumber, col.reg, y);
+
                 y += 8;
 
+                // ===== AUTO PAGE BREAK =====
                 if (y > 280) {
+
                     doc.addPage();
                     y = 20;
+
+                    doc.setFillColor(212, 175, 55);
+                    doc.rect(10, y - 6, 190, 8, "F");
+
+                    doc.setFont("Poppins", "bold");
+                    doc.text("No", col.no, y);
+                    doc.text("Name", col.name, y);
+                    doc.text("NIC", col.nic, y);
+                    doc.text("Phone", col.phone, y);
+                    doc.text("Check-In", col.checkin, y);
+                    doc.text("Check-Out", col.checkout, y);
+                    doc.text("Reg#", col.reg, y);
+
+                    y += 10;
                 }
 
             });
